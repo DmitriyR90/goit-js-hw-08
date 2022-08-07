@@ -8,12 +8,27 @@ const refs = {
 
 const STORAGE_KEY = 'feedback-form-state';
 
-const feedbackData = {};
-
 populateFeedbackFormData();
+const feedbackData = {};
 
 refs.feedbackForm.addEventListener('submit', onFormSubmit);
 refs.feedbackForm.addEventListener('input', throttle(onFeedbackInput, 500));
+
+function populateFeedbackFormData() {
+  let savedFeedback = localStorage.getItem(STORAGE_KEY);
+  const savedFeedbackData = JSON.parse(savedFeedback);
+
+  if (savedFeedback) {
+    const { message = '', email = '' } = savedFeedbackData;
+    refs.emailArea.value = email;
+    refs.messageArea.value = message;
+  }
+}
+
+function onFeedbackInput(e) {
+  feedbackData[e.target.name] = e.target.value;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbackData));
+}
 
 function onFormSubmit(e) {
   e.preventDefault();
@@ -23,22 +38,5 @@ function onFormSubmit(e) {
     console.log(feedbackData);
     e.currentTarget.reset();
     localStorage.removeItem(STORAGE_KEY);
-  }
-}
-
-function onFeedbackInput(e) {
-  feedbackData[e.target.name] = e.target.value;
-
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbackData));
-}
-
-function populateFeedbackFormData() {
-  let savedFeedback = localStorage.getItem(STORAGE_KEY);
-
-  if (savedFeedback) {
-    const savedFeedbackData = JSON.parse(savedFeedback);
-    const { message = '', email = '' } = savedFeedbackData;
-    refs.emailArea.value = email;
-    refs.messageArea.value = message;
   }
 }
