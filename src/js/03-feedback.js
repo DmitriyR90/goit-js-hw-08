@@ -36,7 +36,7 @@ function populateFeedbackFormData() {
   const savedFeedback = localStorage.getItem(STORAGE_KEY);
 
   if (savedFeedback) {
-    savedFeedbackData = JSON.parse(savedFeedback);
+    const savedFeedbackData = JSON.parse(savedFeedback);
     const { message = '', email = '' } = savedFeedbackData;
     refs.emailArea.value = email;
     refs.messageArea.value = message;
