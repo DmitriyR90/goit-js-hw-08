@@ -33,7 +33,7 @@ function onFeedbackInput(e) {
 }
 
 function populateFeedbackFormData() {
-  const savedFeedback = localStorage.getItem(STORAGE_KEY);
+  let savedFeedback = localStorage.getItem(STORAGE_KEY);
 
   if (savedFeedback) {
     const savedFeedbackData = JSON.parse(savedFeedback);
