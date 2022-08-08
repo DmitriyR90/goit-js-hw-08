@@ -8,18 +8,18 @@ const refs = {
 
 const STORAGE_KEY = 'feedback-form-state';
 
+let feedbackData = {};
 populateFeedbackFormData();
-const feedbackData = {};
 
 refs.feedbackForm.addEventListener('submit', onFormSubmit);
 refs.feedbackForm.addEventListener('input', throttle(onFeedbackInput, 500));
 
 function populateFeedbackFormData() {
   let savedFeedback = localStorage.getItem(STORAGE_KEY);
-  const savedFeedbackData = JSON.parse(savedFeedback);
 
   if (savedFeedback) {
-    const { message = '', email = '' } = savedFeedbackData;
+    feedbackData = JSON.parse(savedFeedback);
+    const { message = '', email = '' } = feedbackData;
     refs.emailArea.value = email;
     refs.messageArea.value = message;
   }
@@ -28,6 +28,7 @@ function populateFeedbackFormData() {
 function onFeedbackInput(e) {
   feedbackData[e.target.name] = e.target.value;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbackData));
+  return feedbackData;
 }
 
 function onFormSubmit(e) {
